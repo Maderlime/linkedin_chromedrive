@@ -41,7 +41,12 @@ def goto_network(driver):
 
 # find search bar element
 def find_searchbar(driver):
-    return driver.find_element_by_xpath("""//*[@placeholder="Search"]""")
+    try: 
+        return driver.find_element_by_xpath("""//*[@placeholder="Search"]""")
+    except:
+        time.sleep(2)
+        driver.refresh()
+        find_searchbar(driver)
 
 # type in searchbar
 def type_searchbar(elem, string):
@@ -61,7 +66,7 @@ def get_links(driver):
             time.sleep(1)
             search_cont = driver.find_element_by_class_name("search-results-container")
         except:
-            print("")
+            search_cont = search_cont
         ul_container = search_cont.find_element_by_tag_name("ul")
         people = ul_container.find_elements_by_tag_name("a")
         try:

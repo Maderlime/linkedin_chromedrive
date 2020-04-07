@@ -58,7 +58,10 @@ def type_searchbar(elem, string):
 def get_links(driver):
     all_links = {}
     try:
-        search_cont = driver.find_element_by_class_name("search-results-container")
+        try:
+            search_cont = driver.find_element_by_class_name("search-results-container")
+        except:
+            get_links(driver)
         try:
             has_correction = driver.find_element_by_class_name("li-i18n-linkto link-without-visited-state")
             has_link = has_correction.get_attribute("href")

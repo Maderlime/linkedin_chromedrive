@@ -22,20 +22,19 @@ def main():
     driver.get(url)
     
     try:
+        print("hello! Now reading input_information.txt...")
         input_info = ""
         with open(input_infor, 'r') as file:
             input_info = file.read()
-        print(input_info)
         gen_info = input_info.split(",")
         if len(gen_info) == 3:
                 LOGIN_USERNAME = gen_info[0]
                 LOGIN_PSSWORD = gen_info[1]
                 NAME_ARRAY = gen_info[2]
-                print(NAME_ARRAY)
         else:
             print("wrong input length. you are missing something. ")
     except:
-        print("please put in a file called input_information.txt!")
+        print("please put in a file in this folder called input_information.txt!")
         
     proceed = input("Proceed to login? (press enter) ")
     sel_fun.login(driver, LOGIN_USERNAME, LOGIN_PSSWORD) # login

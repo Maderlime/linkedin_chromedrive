@@ -15,12 +15,15 @@ def main():
     LOGIN_USERNAME = ""
     LOGIN_PSSWORD = ""
     NAME_ARRAY = ""
+    
     # url of LinkedIn 
-    url = "http://linkedin.com/login"      
+    url = "http://linkedin.com/login"  
+    
     # path to browser web driver 
     driver = webdriver.Chrome(ChromeDriverManager().install())      
     driver.get(url)
     
+    # read input_information to grab username, password, and array of names
     try:
         print("hello! Now reading input_information.txt...")
         input_info = ""
@@ -36,9 +39,13 @@ def main():
     except:
         print("please put in a file in this folder called input_information.txt!")
         
+    # input for proceed
     proceed = input("Proceed to login? (press enter) ")
-    sel_fun.login(driver, LOGIN_USERNAME, LOGIN_PSSWORD) # login
-    time.sleep(2)    
+    
+    # login
+    sel_fun.login(driver, LOGIN_USERNAME, LOGIN_PSSWORD) 
+    time.sleep(2)
+    proceed = input("complete security")
     # grab data from list
     data = ""
     with open(NAME_ARRAY, 'r') as file:
@@ -47,9 +54,15 @@ def main():
     if "," in data:
         data.replace("'", "")
         listn = data.split(",")    
+    
+    # traverse data
     title_requests = sel_fun.send_requests(driver, listn)
+    
+    # print final result
     print(title_requests)
-    finaldf = pd.DataFrame(columns = ["Name", "current title", "company"], data = title_requests)
+    
+    # save result to csv. 
+    finaldf = pd.DataFrame(columns = ["Name", "current title", "company", "Grad"], data = title_requests)
     (finaldf
      .to_csv("linkedin_scrape.csv"));
     driver.quit()

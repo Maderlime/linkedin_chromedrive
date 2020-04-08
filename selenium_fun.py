@@ -9,7 +9,7 @@ import os
 import requests
 import pageexploration as ex_pag
 
-# login using top credentials
+# login
 def login(driver, LOGIN_USERNAME, LOGIN_PSSWORD): 
     try:
         # Getting the login element 
@@ -44,6 +44,7 @@ def find_searchbar(driver):
     try: 
         return driver.find_element_by_xpath("""//*[@placeholder="Search"]""")
     except:
+        # retry if linkedin is mean
         time.sleep(2)
         driver.refresh()
         find_searchbar(driver)
@@ -51,6 +52,7 @@ def find_searchbar(driver):
 # type in searchbar
 def type_searchbar(elem, string):
     elem.clear()
+    # search person's name plus san diego
     elem.send_keys(string + " san diego")
     elem.send_keys(Keys.RETURN)
 
@@ -58,10 +60,15 @@ def type_searchbar(elem, string):
 def get_links(driver):
     all_links = {}
     try:
+        # try getting search container
         try:
             search_cont = driver.find_element_by_class_name("search-results-container")
         except:
+            driver.refresh()
+            time.sleep(1)
             get_links(driver)
+        
+        # check if corrections were created by linkedin
         try:
             has_correction = driver.find_element_by_class_name("li-i18n-linkto link-without-visited-state")
             has_link = has_correction.get_attribute("href")
@@ -70,7 +77,11 @@ def get_links(driver):
             search_cont = driver.find_element_by_class_name("search-results-container")
         except:
             search_cont = search_cont
+        
+        # grab ul container
         ul_container = search_cont.find_element_by_tag_name("ul")
+        
+        # list of a
         people = ul_container.find_elements_by_tag_name("a")
         try:
             for i in people:
@@ -87,6 +98,7 @@ def get_links(driver):
             print("--some error in finding href--")
             print()
     except:
+        # for containers with single people
         try:
             search_cont = driver.find_element_by_class_name("PROFILE")
 
@@ -124,16 +136,17 @@ def explore_page(driver, link):
     # HTML from element with `get_attribute`
     driver.get(link)
     time.sleep(1)
-#         driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-#         time.sleep(3)
-#         element = driver.find_element_by_class_name("core-rail")
+    driver.execute_script("window.scrollTo(0, document.body.scrollHeight/2);")
+    time.sleep(2)
+    driver.execute_script("window.scrollTo(document.body.scrollHeight/2, document.body.scrollHeight);")
+    time.sleep(1)
+    element = driver.find_element_by_class_name("core-rail")
     html = driver.page_source
     # title of individual
     page_title1 = ex_pag.evaluate_html(html)
-    page_title2 = ex_pag.find_company(html)    
     # industry of individual
 #         industry = ex_pag.find_industry(html)
-    return [page_title1, page_title2]
+    return page_title1
 
 def send_requests(driver, listn): 
     title_list = []

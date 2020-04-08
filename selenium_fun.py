@@ -51,7 +51,7 @@ def find_searchbar(driver):
 # type in searchbar
 def type_searchbar(elem, string):
     elem.clear()
-    elem.send_keys(string)
+    elem.send_keys(string + " san diego")
     elem.send_keys(Keys.RETURN)
 
 # get links from type_searchbar call

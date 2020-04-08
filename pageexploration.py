@@ -29,18 +29,18 @@ def evaluate_html(html_string):
         wanted_information.append(title2)
     except:
         wanted_information.append("none")
-        
+    year = "none" 
     try:
         add_baby = True
         title3 = soup.find("section", {"id":"education-section"})
         individual_educations = title3.find_all("li")
-        year = ""
         for i in individual_educations:
             school = i.find("h3").text
             school = str(school).upper()
 #             print("evaluate ", school) 
             year = i.find_all("time")
-#             print("year", year)
+            print(school)
+            print(year)
             if "University of California".upper() in school:
                 wanted_information.append(year[1].text)
                 add_baby = False
@@ -48,7 +48,7 @@ def evaluate_html(html_string):
         if add_baby == True:
             wanted_information.append(str(year))
     except:
-        wanted_information.append("none")
+        wanted_information.append(year)
     print("wanted: ", wanted_information)
     return wanted_information
     

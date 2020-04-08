@@ -8,6 +8,9 @@ import re
 import os
 import requests
 import pageexploration as ex_pag
+import pandas as pd
+
+
 
 # login
 def login(driver, LOGIN_USERNAME, LOGIN_PSSWORD): 
@@ -47,7 +50,11 @@ def find_searchbar(driver):
         # retry if linkedin is mean
         time.sleep(2)
         driver.refresh()
-        find_searchbar(driver)
+        try:
+            driver.get("http://linkedin.com/")
+            return driver.find_element_by_xpath("""//*[@aria-label="Search"]""")
+        except:
+            find_searchbar(driver)
 
 # type in searchbar
 def type_searchbar(elem, string):
@@ -135,8 +142,12 @@ def click_done():
 def explore_page(driver, link):
     # HTML from element with `get_attribute`
     driver.get(link)
-    time.sleep(1)
-    driver.execute_script("window.scrollTo(0, document.body.scrollHeight/2);")
+    time.sleep(2)
+    driver.execute_script("window.scrollTo(0, document.body.scrollHeight/4);")
+    time.sleep(2)
+    driver.execute_script("window.scrollTo(document.body.scrollHeight/4, document.body.scrollHeight/2);")
+    time.sleep(2)
+    driver.execute_script("window.scrollTo(document.body.scrollHeight/2, (document.body.scrollHeight/2)+(document.body.scrollHeight/4));")
     time.sleep(2)
     driver.execute_script("window.scrollTo(document.body.scrollHeight/2, document.body.scrollHeight);")
     time.sleep(1)

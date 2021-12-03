@@ -62,9 +62,9 @@ def main():
     print(title_requests)
     
     # save result to csv. 
-    finaldf = pd.DataFrame(columns = ["Name", "current title", "company", "Grad"], data = title_requests)
+    finaldf = pd.DataFrame(columns = ["Name", "current title", "company", "Grad", "Experience"], data = title_requests)
     (finaldf
-     .to_csv("linkedin_scrape.csv"));
+     .to_csv("linkedin_withexperience.csv"));
     driver.quit()
 
 main()

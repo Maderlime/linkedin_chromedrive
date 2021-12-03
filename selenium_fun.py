@@ -52,9 +52,9 @@ def find_searchbar(driver):
         driver.refresh()
         try:
             driver.get("http://linkedin.com/")
-            return driver.find_element_by_xpath("""//*[@aria-label="Search"]""")
+            return driver.find_element_by_class_name("search-global-typeahead__input always-show-placeholder")
         except:
-            find_searchbar(driver)
+            return driver.find_element_by_tag_name("input")
 
 # type in searchbar
 def type_searchbar(elem, string):
@@ -72,8 +72,7 @@ def get_links(driver):
             search_cont = driver.find_element_by_class_name("search-results-container")
         except:
             driver.refresh()
-            time.sleep(1)
-            get_links(driver)
+            time.sleep(2)
         
         # check if corrections were created by linkedin
         try:
@@ -160,9 +159,12 @@ def explore_page(driver, link):
     return page_title1
 
 def send_requests(driver, listn): 
+    
+    
     title_list = []
     # if a list was given
     for i in listn:
+        file1 = open("Name_Experience.txt","a") 
         time.sleep(1)
         searchbar = find_searchbar(driver)
         searchbar.click()
@@ -176,7 +178,12 @@ def send_requests(driver, listn):
             newlist = [i] + person_title
             # newlist.append(person_title)
 #             print(newlist)
+            file1.write(str(newlist) + "\n")
+            file1.close()
             title_list.append(newlist)
         else:
+            file1.write("none" + "\n")
+            file1.close()
             title_list.append("none")
+        
     return title_list

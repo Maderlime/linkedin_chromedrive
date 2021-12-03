@@ -49,7 +49,24 @@ def evaluate_html(html_string):
             wanted_information.append(str(year))
     except:
         wanted_information.append(year)
+    
+    educations = []
+    try:
+        title = soup.find("section", {"id":"experience-section"})
+        individual_experience = title.findAll("li")
+        for i in individual_experience:
+            position = i.find("h3", {"class":"t-16 t-black t-bold"}).text.replace("\n", "")
+            year = i.find("h4", {"class":"pv-entity__date-range t-14 t-black--light t-normal"}).text.replace("\n", "")
+            place = i.find("p",{"class":"pv-entity__secondary-title t-14 t-black t-normal"}).text.replace("\n", "")      
+            educations.append([position, place, year])
+        
+        wanted_information.append(educations)
+    except:
+        
+        wanted_information.append(educations)
+    
     print("wanted: ", wanted_information)
+    
     return wanted_information
     
     
@@ -77,3 +94,17 @@ def find_gradyear(html_string):
         return title.find("time").text
     except:
         return "none"
+def find_experience(html_string):
+    soup = BeautifulSoup(html_string, 'html.parser')
+    educations = []
+    try:
+        title = soup.find("section", {"id":"experience-section"})
+        individual_experience = title.findAll("li")
+        for i in individual_educations:
+            position = i.find("h3").text
+            place = i.find("pv-entity__secondary-title t-14 t-black t-normal").text
+            year = i.find("h4").text
+            educations.append([position, place, year])
+        return educations
+    except:
+        return educations
